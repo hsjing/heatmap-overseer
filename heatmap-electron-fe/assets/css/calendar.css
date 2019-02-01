@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400');
+
+:root{
+    --window-width: 700px;
+    --home-row-height: 60px;
+    --date-font: 18pt;
+    --tx-duration: 0.15s;
+}
+
+body {
+    background: white;
+    color:#fff;
+    font-family: 'Roboto Condensed';
+    margin: 0px;
+    padding: 0px;
+    width: var(--window-width);
+}
+
+.top-row {
+    background:#3F51B5;
+    -webkit-app-region: drag;    
+    width: var(--window-width);
+    height: 20px;
+    margin: 0px;
+}
+
+.top-row .buttons {
+    font-size: 12pt;
+    height: 20px;
+    width: 20px;
+    padding: 0px;
+    transition-duration: var(--tx-duration);
+}
+
+.top-row .buttons:focus {outline:0;}
+.top-row .buttons:hover {
+    background-color: white;
+    color: #3F51B5;
+    border: none;
+    z-index:1;
+}
+
+.util-row {
+    -webkit-app-region: drag;
+    background:#3F51B5;
+    width:100%;
+    height: var(--home-row-height);
+    margin-top:0px;
+    display: grid;
+    align-items: center;
+}
+
+.util-row .buttons {
+    font-size: 5pt;
+    height: var(--home-row-height);
+    transition-duration: var(--tx-duration);
+}
+
+.util-row .buttons:focus {outline:0;}
+.util-row .buttons:hover {
+    background-color: rgb(31, 41, 95);
+    box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.24);
+    border: none;
+    z-index:1;
+}
+
+/* month selectors */
+#monthSelBac {
+    position: absolute;
+    right: 40px;
+}
+#monthSelFor {
+    position: absolute;
+    right: 0px;
+}
+
+/* home button */
+#homeSel {
+    height: var(--home-row-height);
+    width: var(--home-row-height);
+    /* border-radius: 50%; */
+    position: absolute;
+    right: 80px;
+}
+
+/* month display*/
+#date-container {
+    position: absolute;
+    left: 0px;
+    width: 200px;
+    height: var(--home-row-height);
+    background: #3F51B5;
+    align-items: left;
+}
+
+#currentMonth {
+    padding-left: 10px;
+    margin-top: 0px;
+    font-weight: 300;
+    position: relative;
+    text-align: left;
+    vertical-align: middle;
+    font-size: var(--date-font);
+}
+#currentYear {
+    padding-left: 10px;
+    position: relative;
+    text-align: left;    
+    vertical-align: middle;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: var(--date-font);
+}
+
+img {
+    width: 20px;
+}
+
+/* weekday label row */
+.weekday-grid {
+    display: grid;
+    width: var(--window-width);
+    height: 20px;
+    grid-gap: 0px;
+    grid-auto-flow: column;
+}
+
+.weekday-labels {
+    width: 100px;
+    background-color: white;
+    text-align: center;
+    color: rgb(31, 41, 95);;
+}
+
+/* 42 day grid labels */
+.day-grid {
+    display: grid;
+    width: var(--window-width);
+    height: 600px;
+    grid-gap: 0;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px 100px 100px 100px;
+}
+
+.weekdays {
+    width: 100px;
+    color: rgb(31, 41, 95);
+    text-align: center;
+    transition-duration: var(--tx-duration);
+}
+
+.weekdays:hover {
+    background-color: rgb(31, 41, 95);
+    color: white;
+    border: none;
+    z-index:1;
+}
+
+button {
+    -webkit-app-region: no-drag;
+    float:right;
+    background:#3F51B5;
+    border:none;
+    color:white;
+    text-transform:uppercase;
+    padding:10px;    
+    cursor:pointer;
+}

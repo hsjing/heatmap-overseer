@@ -1,0 +1,26 @@
+{
+  "gypfile": true,
+  "name": "heatmap",
+  "version": "1.0.0",
+  "description": "Cross-platform heatmap renderer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "install": "node-gyp rebuild",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jing Huang",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^2.0.2",
+    "mysql": "^2.15.0",
+    "nan": "^2.10.0",
+    "npm": "^6.4.1"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.1",
+    "electron-reload": "^1.2.2",
+    "eslint": "^5.2.0",
+    "eslint-config-google": "^0.9.1"
+  }
+}
