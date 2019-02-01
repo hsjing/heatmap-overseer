@@ -1,0 +1,11 @@
+TODO before starting a new node.js project:
+
+VSCODE
+- update [ ]
+- npm install eslint [ ]
+- npm install babel-eslint [ ]
+- npm install electron-reload [ ]
+- ctrl-shift-p "ESLint create eslint config"
+- google standard style, javascript
+
+- eslint filename.js --fix
