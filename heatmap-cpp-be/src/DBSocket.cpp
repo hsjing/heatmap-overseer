@@ -87,7 +87,7 @@ int CDBSocket::checkTable(std::string currDateStr) {
     // Prepare statement
     dbStmt = dbConn->createStatement();
 
-    // Try/catch block
+    // Execute and handle exceptions
     try {
         dbRes = dbStmt->executeQuery(tableChkQuery);  // Execute query
 

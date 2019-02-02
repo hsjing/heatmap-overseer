@@ -33,7 +33,8 @@ class CSession {
     std::string server, username, password, portNumber;  // Access credentials
     std::string dateStr;  // Session date in std::string form
 
-    bool EXIT_FLAG;  // The flag used to close main
+    bool EXIT_FLAG;
+    bool COLLECT_FLAG;
 
     int nodeCnt;  // Number of active nodes expected in the session
 
@@ -75,8 +76,20 @@ class CSession {
     void loadDate(void);
 
     /**
-     * @brief Loads data into session vector buffer
+     * @brief Collect and loads data into buffer
      *
      */
-    void loadData(void);
+    void collectData(void);
+
+    /**
+     * @brief Updates the table through connection socket
+     *
+     */
+    void updateTable(void);
+
+    /**
+     * @brief Runs the collector/socket threads
+     *
+     */
+    void runThreads(void) {}
 };

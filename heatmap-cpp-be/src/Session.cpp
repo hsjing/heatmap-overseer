@@ -31,6 +31,7 @@ void CSession::initSession(void) {
 
     // Make local connection
     if (connChoice == "Y" || connChoice == "y") {
+        /*
         // Specify port number
         std::cout << "Specify port for local connection:";
         std::cin >> portNumber;
@@ -44,6 +45,11 @@ void CSession::initSession(void) {
         std::cin >> password;
 
         std::cout << endl;
+        */
+
+        server = "tcp://127.0.0.1:3306";
+        username = "root";
+        password = "root";
 
         sessSock->initDBConn(server, username, password, dateStr);
 
@@ -52,6 +58,7 @@ void CSession::initSession(void) {
         std::cout << "Goodbye!";
 }
 
+// TODO - find better way of doing this?
 void CSession::loadDate(void) {
     // Get date of session
     time(&sessDate);
@@ -64,15 +71,27 @@ void CSession::loadDate(void) {
     dateStr = dateArr;  // String-ify char array
 }
 
-void loadData(void) {
-    // Collect data into collector buffer
-    sessCol->collect();
+void CSession::collectData(void) {
+    while (COLLECT_FLAG) {
+        // Collect data into collector buffer
+        sessCol->collect();
 
-    // Load into session buffer vector
-    for (int i = 0; i < sessCol->colBuf.size(); i++) {
-        this->sessBuf.push_back(sessCol->colBuf[i]);
+        // Load into session buffer vector
+        for (int i = 0; i < sessCol->colBuf.size(); i++) {
+            this->sessBuf.push_back(sessCol->colBuf[i]);
+        }
     }
 }
 
-// TODO - separate terminate from destructor (?)
+void CSession::updateTable(void) { return 0; }
+
+void CSession::runThreads(void) {
+    std::thread collectThread(this->collectData());
+    // std::thread socketThread(this->updateTable());
+
+    collectThread.join();
+    // socketThread.join();
+}
+
+// TODO - separate terminate from destructor?
 void CSession::termSession(void) {}
