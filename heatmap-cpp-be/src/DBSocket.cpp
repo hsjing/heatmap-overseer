@@ -14,7 +14,7 @@ CDBSocket::CDBSocket() {
     this->dbDriver = get_driver_instance();  // Retrieve instance of Connection
                                              // from Driver object
     std::cout << "Connection driver version " << dbDriver->getMajorVersion()
-              << "." << dbDriver->getMinorVersion() << endl;
+              << "." << dbDriver->getMinorVersion() << std::endl;
 }
 
 CDBSocket::~CDBSocket() {
@@ -26,25 +26,25 @@ CDBSocket::~CDBSocket() {
 
 void CDBSocket::initDBConn(std::string serv, std::string uname,
                            std::string pass, std::string date) {
-    std::cout << "Trying to establish connection to " << serv << " ..." << endl;
+    std::cout << "Trying to establish connection to " << serv << " ..." << std::endl;
 
     try {
         // Create connection object
         dbConn = dbDriver->connect(serv, uname, pass);
-        std::cout << "Connection established, selecting database..." << endl;
+        std::cout << "Connection established, selecting database..." << std::endl;
 
         // Connect to database
         dbConn->setSchema("heatmap");
-        std::cout << "Database selected!" << endl;
+        std::cout << "Database selected!" << std::endl;
 
     } catch (sql::SQLException& e) {
         ExpHandle("initDBConn", e);
     }
 
-    std::cout << "Connection established!" << endl;
+    std::cout << "Connection established!" << std::endl;
 
     if (this->makeTable(date)) {
-        std::cout << "Table for " << date << " successfully created!" << endl;
+        std::cout << "Table for " << date << " successfully created!" << std::endl;
     }
 }
 
@@ -55,7 +55,8 @@ int CDBSocket::makeTable(std::string currDateStr) {
             "CREATE TABLE IF NOT EXISTS " + currDateStr +
             "(stamp TIME, N1 float, N2 float, N3 float, N4 "
             "float, N5 float, N6 float, N7 float, N8 float);";
-        sql::SQLstring tableMakQuery(tableMakStmt);
+        
+        sql::SQLString tableMakQuery(tableMakStmt);
 
         dbStmt = dbConn->createStatement();
 
@@ -82,7 +83,7 @@ int CDBSocket::checkTable(std::string currDateStr) {
     // TODO - Not sure if SQLstd::string object can be concatenated, so using
     // hackish workaround for now
     std::string tableChkStmt = "SHOW TABLES LIKE '" + currDateStr + "'";
-    sql::SQLstring tableChkQuery(tableChkStmt);
+    sql::SQLString tableChkQuery(tableChkStmt);
 
     // Prepare statement
     dbStmt = dbConn->createStatement();

@@ -22,18 +22,18 @@ void CCollector::collect(void) {
     // Reset timeout counter
     int collectCounter = 0;
 
-    while (!colExitFlag) {
+    while (!COLLECTOR_EXIT) {
         // Collect data from a single node through UART
         colUart->uartRx();
 
         // Flatten and clone the current UART buffer, and check if all nodes
         // have viable data. If so, throw colCompleteFlag
-        vector<float> flatTemp;
+        std::vector<float> flatTemp;
 
-        transform(colUart->tempData.begin(),
+        std::transform(colUart->tempData.begin(),
                   colUart->tempData.end(),  // Flatten vector
                   back_inserter(flatTemp),
-                  [&flatTemp](const pair<float, float>& p) {
+                  [&flatTemp](const std::pair<float, float>& p) {
                       flatTemp.push_back(p.first);
                       return p.second;
                   });
@@ -43,7 +43,7 @@ void CCollector::collect(void) {
         if (std::none_of(flatTemp.begin(), flatTemp.end(),
                          [](float i) { return i != -300.0; }) ||
             collectCounter > 100)
-            colExitFlag = 1;
+            COLLECTOR_EXIT = 1;
 
         collectCounter++;
     }

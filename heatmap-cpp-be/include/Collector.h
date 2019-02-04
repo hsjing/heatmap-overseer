@@ -16,7 +16,7 @@ class CUart;  // Forward declare to avoid cross referencing issues
 
 class CCollector {
    private:
-    bool colExitFlag = 0;  // Exit flag
+    bool COLLECTOR_EXIT = 0;  // Exit flag
 
    public:
     CUart *colUart;  // Collector UART connection object

@@ -14,7 +14,7 @@
 CSession::CSession() {
     sessSock = new CDBSocket;
     sessCol = new CCollector;
-    this->getDate();
+    this->loadDate();
     nodeCnt = 8;  // TODO - dynamic node detection (current node count is 8)
 }
 
@@ -75,18 +75,20 @@ void CSession::collectData(void) {
     while (COLLECT_FLAG) {
         // Collect data into collector buffer
         sessCol->collect();
+        std::cout << "collecting";
 
         // Load into session buffer vector
-        for (int i = 0; i < sessCol->colBuf.size(); i++) {
+        for (int i = 0; i < sizeof(sessCol->colBuf); i++) {
             this->sessBuf.push_back(sessCol->colBuf[i]);
         }
     }
 }
 
-void CSession::updateTable(void) { return 0; }
+void CSession::updateTable(void) {}
+
 
 void CSession::runThreads(void) {
-    std::thread collectThread(this->collectData());
+    std::thread collectThread(std::bind(&CSession::collectData, this));
     // std::thread socketThread(this->updateTable());
 
     collectThread.join();

@@ -39,7 +39,7 @@ class CUart {
     CUart();   // Constructor
     ~CUart();  // Destructor
 
-    std::vector<pair<float, float>> tempData = std::vector<pair<float, float>>(
+    std::vector<std::pair<float, float>> tempData = std::vector<std::pair<float, float>>(
         36);  // Temperature data vector, each node represented by vector
               // element and each element has a pair of values (analog and
               // digital)

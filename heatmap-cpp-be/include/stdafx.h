@@ -18,6 +18,7 @@
 #include <cmath>
 
 // threading
+#include <functional>
 #include <mutex>
 #include <thread>
 
@@ -26,9 +27,13 @@
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
+#include <cppconn/sqlstring.h>
 
 // modules here
 #include "Collector.h"
 #include "DBSocket.h"
 #include "Session.h"
 #include "Uart.h"
+#include "ExpHandle.h"
+
+using namespace std;

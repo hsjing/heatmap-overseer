@@ -91,5 +91,5 @@ class CSession {
      * @brief Runs the collector/socket threads
      *
      */
-    void runThreads(void) {}
+    void runThreads(void);
 };
