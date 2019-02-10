@@ -75,7 +75,10 @@ void CSession::collectData(void) {
     while (COLLECT_FLAG) {
         // Collect data into collector buffer
         sessCol->collect();
-        std::cout << "collecting";
+
+        // Testing section
+        std::cout << "collecting" << std::endl;
+        std::cout << sessCol->colBuf[0] << std::endl;
 
         // Load into session buffer vector
         for (int i = 0; i < sizeof(sessCol->colBuf); i++) {
@@ -85,7 +88,6 @@ void CSession::collectData(void) {
 }
 
 void CSession::updateTable(void) {}
-
 
 void CSession::runThreads(void) {
     std::thread collectThread(std::bind(&CSession::collectData, this));
