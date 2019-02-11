@@ -26,14 +26,14 @@
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
-#include <cppconn/statement.h>
 #include <cppconn/sqlstring.h>
+#include <cppconn/statement.h>
 
 // modules here
 #include "Collector.h"
 #include "DBSocket.h"
+#include "ExpHandle.h"
 #include "Session.h"
 #include "Uart.h"
-#include "ExpHandle.h"
 
 using namespace std;

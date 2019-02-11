@@ -26,12 +26,14 @@ CDBSocket::~CDBSocket() {
 
 void CDBSocket::initDBConn(std::string serv, std::string uname,
                            std::string pass, std::string date) {
-    std::cout << "Trying to establish connection to " << serv << " ..." << std::endl;
+    std::cout << "Trying to establish connection to " << serv << " ..."
+              << std::endl;
 
     try {
         // Create connection object
         dbConn = dbDriver->connect(serv, uname, pass);
-        std::cout << "Connection established, selecting database..." << std::endl;
+        std::cout << "Connection established, selecting database..."
+                  << std::endl;
 
         // Connect to database
         dbConn->setSchema("heatmap");
@@ -44,7 +46,8 @@ void CDBSocket::initDBConn(std::string serv, std::string uname,
     std::cout << "Connection established!" << std::endl;
 
     if (this->makeTable(date)) {
-        std::cout << "Table for " << date << " successfully created!" << std::endl;
+        std::cout << "Table for " << date << " successfully created!"
+                  << std::endl;
     }
 }
 
@@ -55,7 +58,7 @@ int CDBSocket::makeTable(std::string currDateStr) {
             "CREATE TABLE IF NOT EXISTS " + currDateStr +
             "(stamp TIME, N1 float, N2 float, N3 float, N4 "
             "float, N5 float, N6 float, N7 float, N8 float);";
-        
+
         sql::SQLString tableMakQuery(tableMakStmt);
 
         dbStmt = dbConn->createStatement();

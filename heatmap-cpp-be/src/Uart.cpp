@@ -74,13 +74,13 @@ void CUart::uartRx(void) {
                      digital1 + 0);  // Copy digital data into 'digital' string
                 copy(rxBuf + 15, rxBuf + 16,
                      digital2 + 0);  // Copy digital data into 'digital' string
-                     
+
                 fDigi1 = (int)strtol(digital1, NULL,
-                                16);  // digital data to nearest degree
-                                      // from string to long int
+                                     16);  // digital data to nearest degree
+                                           // from string to long int
                 fDigi2 = (int)strtol(digital2, NULL,
-                                16);  // digital data to nearest 0.0625 of
-                                      // a degree from string to long int
+                                     16);  // digital data to nearest 0.0625 of
+                                           // a degree from string to long int
 
                 // Consolidate digital temperature
                 digiTemp = fDigi1 + fDigi2 * 0.0625;

@@ -19,12 +19,12 @@ class CUart {
     int rxLen,     // Receiving buffer length
         iter = 0;  // Buffer iterator
 
-    char rxBuf[256],   // Receiver buffer
-        txBuf[20],     // Transmit buffer
-        *pTxBuf,       // Transmit buffer pointer
-        digital1[256],  // Digital buffer
-        digital2[256],  // Digital buffer
-        data[1];       // Data buffer
+    char rxBuf[256],    // Receiver buffer
+        txBuf[20],      // Transmit buffer
+        *pTxBuf,        // Transmit buffer pointer
+        digital1[256],  // Digital buffer 1
+        digital2[256],  // Digital buffer 2
+        data[1];        // Data buffer
 
     std::string analog;  // Analog data string
 
@@ -40,10 +40,11 @@ class CUart {
     CUart();   // Constructor
     ~CUart();  // Destructor
 
-    std::vector<std::pair<float, float>> tempData = std::vector<std::pair<float, float>>(
-        36);  // Temperature data vector, each node represented by vector
-              // element and each element has a pair of values (analog and
-              // digital)
+    std::vector<std::pair<float, float>> tempData =
+        std::vector<std::pair<float, float>>(
+            36);  // Temperature data vector, each node represented by vector
+                  // element and each element has a pair of values (analog and
+                  // digital)
 
     /**
      * @brief Receive from UART

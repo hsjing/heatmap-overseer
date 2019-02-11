@@ -77,20 +77,17 @@ void CSession::collectData(void) {
         sessCol->collect();
 
         // Testing section
-        std::cout << "collecting" << std::endl;        
-        
+        std::cout << "collecting" << std::endl;
 
         std::cout << sessCol->colBuf[1] << std::endl;
 
         std::cout << sessCol->colBuf[3] << std::endl;
 
-        
-
         // Load into session buffer vector
         for (int i = 0; i < sizeof(sessCol->colBuf); i++) {
             this->sessBuf.push_back(sessCol->colBuf[i]);
         }
-        
+
         // Delay collection a bit
         usleep(1000000);
     }
