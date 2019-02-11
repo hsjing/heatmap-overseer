@@ -40,11 +40,11 @@ class CUart {
     CUart();   // Constructor
     ~CUart();  // Destructor
 
+    // Temperature data vector, each node represented by vector
+    // element and each element has a pair of values (analog and
+    // digital)
     std::vector<std::pair<float, float>> tempData =
-        std::vector<std::pair<float, float>>(
-            36);  // Temperature data vector, each node represented by vector
-                  // element and each element has a pair of values (analog and
-                  // digital)
+        std::vector<std::pair<float, float>>(36);
 
     /**
      * @brief Receive from UART

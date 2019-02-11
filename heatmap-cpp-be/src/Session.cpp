@@ -97,10 +97,10 @@ void CSession::updateTable(void) {}
 
 void CSession::runThreads(void) {
     std::thread collectThread(std::bind(&CSession::collectData, this));
-    // std::thread socketThread(this->updateTable());
+    std::thread socketThread(this->updateTable());  // TODO - does this work?
 
     collectThread.join();
-    // socketThread.join();
+    socketThread.join();
 }
 
 // TODO - separate terminate from destructor?
