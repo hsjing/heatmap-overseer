@@ -62,7 +62,6 @@ void CSession::initSession(void) {
 void CSession::loadDate(void) {
     // Get date of session
     time(&sessDate);
-    tm* tm;
     char dateArr[10];
     tm = localtime(&sessDate);
 
@@ -76,28 +75,39 @@ void CSession::collectData(void) {
         // Collect data into collector buffer
         sessCol->collect();
 
-        // Testing section
-        std::cout << "collecting" << std::endl;
-
-        std::cout << sessCol->colBuf[1] << std::endl;
-
-        std::cout << sessCol->colBuf[3] << std::endl;
-
         // Load into session buffer vector
+        sessBufMu.lock();
         for (int i = 0; i < sizeof(sessCol->colBuf); i++) {
             this->sessBuf.push_back(sessCol->colBuf[i]);
         }
+        sessBufMu.unlock();
 
-        // Delay collection a bit
-        usleep(1000000);
+        // Delay collection half a second
+        usleep(500000);
     }
 }
 
-void CSession::updateTable(void) {}
+void CSession::updateTable(void) {
+    while (UPDATE_FLAG) {
+        // Clone session data buffer
+        sessBufMu.lock();
+        std::vector<float> updateBuf = this->sessBuf;
+        sessBufMu.unlock();
+
+        // Get current time
+        time_t now = time(0);
+        tm = localtime(&now);
+
+        string timeStampStr = tm->tm_hour + ":" + tm->tm_min + ":" + tm->tm_sec;
+
+        // Insert into table
+    }
+}
 
 void CSession::runThreads(void) {
+    // Run the threads
     std::thread collectThread(std::bind(&CSession::collectData, this));
-    std::thread socketThread(this->updateTable());  // TODO - does this work?
+    std::thread socketThread(std::bind(&CSession::updateTable, this));
 
     collectThread.join();
     socketThread.join();

@@ -25,16 +25,21 @@ class CCollector;
 
 class CSession {
    private:
+    tm *tm;  // C++ time pointer
+
     time_t sessDate;  // Session date
 
     std::vector<float> sessBuf;  // Temporary session buffer
 
-   public:
+    std::mutex sessBufMu;  // Session data buffer locking
+
+    // public:
     std::string server, username, password, portNumber;  // Access credentials
     std::string dateStr;  // Session date in std::string form
 
     bool EXIT_FLAG;
     bool COLLECT_FLAG;
+    bool UPDATE_FLAG;
 
     int nodeCnt;  // Number of active nodes expected in the session
 

@@ -37,14 +37,23 @@ class CUart {
     int EXIT_FLAG = false;  // Process exit flag
 
    public:
-    CUart();   // Constructor
-    ~CUart();  // Destructor
-
     // Temperature data vector, each node represented by vector
     // element and each element has a pair of values (analog and
     // digital)
     std::vector<std::pair<float, float>> tempData =
         std::vector<std::pair<float, float>>(36);
+
+    /**
+     * @brief Construct a new CUart object
+     *
+     */
+    CUart();
+
+    /**
+     * @brief Destroy the CUart object
+     *
+     */
+    ~CUart();
 
     /**
      * @brief Receive from UART

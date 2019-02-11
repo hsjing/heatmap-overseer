@@ -23,8 +23,6 @@ class CDBSocket {
     sql::ResultSet *dbRes;
 
    public:
-    int test;
-
     /**
      * @brief Construct a new CDBSocket object
      *
