@@ -7,6 +7,8 @@ int main() {
     test.initSession();
     test.runThreads();
 
+
+
     /*
     if (test.sessSock->checkTable(test.dateStr))
         cout << "Table for " << test.dateStr << " exists." << endl;

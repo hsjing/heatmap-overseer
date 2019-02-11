@@ -22,7 +22,8 @@ class CUart {
     char rxBuf[256],   // Receiver buffer
         txBuf[20],     // Transmit buffer
         *pTxBuf,       // Transmit buffer pointer
-        digital[256],  // Digital buffer
+        digital1[256],  // Digital buffer
+        digital2[256],  // Digital buffer
         data[1];       // Data buffer
 
     std::string analog;  // Analog data string

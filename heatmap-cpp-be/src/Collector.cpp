@@ -51,8 +51,14 @@ void CCollector::collect(void) {
     // At this point, there should be a fully valid tempData buffer in UART
     // object OR the collector has timed out
     for (int i = 0; i < colUart->tempData.size(); i++) {
+        
+        /* RE-ENABLE WHEN BOTH DIGITAL AND ANALOG ARE WORKING
         if (abs(colUart->tempData[i].first - colUart->tempData[i].second) < 5 &&
             colUart->tempData[i].first != -300.0)
-            colBuf[i] = colUart->tempData[i].first;
+            */
+            colBuf[i] = colUart->tempData[i].second;
+            
+            // Reset collection
+            COLLECTOR_EXIT = 0;
     }
 }

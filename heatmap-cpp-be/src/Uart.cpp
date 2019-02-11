@@ -50,14 +50,14 @@ void CUart::uartRx(void) {
         }  // printf("Error reading from UART: %d\n", uart0_filestream);
 
         // If data in buffer is not yet valid
-        else if (data[0] != '.') {
+        else if (data[0] != 'w') {
             // Load 'data' into next element in 'rxBuf'
             rxBuf[iter] = data[0];
             iter++;  // Increment iterator
         }
 
         // If data in buffer is valid
-        else if (data[0] == '.') {
+        else if (data[0] == 'w') {
             if (rxBuf[0] == 'N') {
                 // 2nd element of rxBuf contains the node number
                 // This converts that node number from char to int
@@ -69,14 +69,16 @@ void CUart::uartRx(void) {
                 stream << analog;
 
                 // Digital conversion
-                char* pEnd;
 
-                copy(rxBuf + 12, rxBuf + 16,
-                     digital + 0);  // Copy digital data into 'digital' string
-                fDigi1 = strtol(digital, &pEnd,
+                copy(rxBuf + 12, rxBuf + 14,
+                     digital1 + 0);  // Copy digital data into 'digital' string
+                copy(rxBuf + 15, rxBuf + 16,
+                     digital2 + 0);  // Copy digital data into 'digital' string
+                     
+                fDigi1 = (int)strtol(digital1, NULL,
                                 16);  // digital data to nearest degree
                                       // from string to long int
-                fDigi2 = strtol(pEnd, &pEnd,
+                fDigi2 = (int)strtol(digital2, NULL,
                                 16);  // digital data to nearest 0.0625 of
                                       // a degree from string to long int
 
