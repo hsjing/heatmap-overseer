@@ -10,6 +10,8 @@
  */
 #pragma once
 
+using namespace std;
+
 #include "stdafx.h"
 
 #include "mysql_connection.h"
@@ -33,7 +35,7 @@ class CSession {
 
     mutex sessBufMu;  // Session data buffer locking
 
-    // public:
+   public:
     string server, username, password, portNumber;  // Access credentials
     string dateStr;  // Session date in string form
 

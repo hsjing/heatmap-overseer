@@ -109,7 +109,7 @@ void CSession::updateSocket(void) {
 void CSession::runThreads(void) {
     // Run the threads
     thread collectThread(bind(&CSession::collectData, this));
-    thread socketThread(bind(&CSession::updateTable, this));
+    thread socketThread(bind(&CSession::updateSocket, this));
 
     collectThread.join();
     socketThread.join();

@@ -10,6 +10,8 @@
  */
 #pragma once
 
+using namespace std;
+
 #include "stdafx.h"
 
 class CUart;  // Forward declare to avoid cross referencing issues
