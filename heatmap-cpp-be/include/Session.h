@@ -27,7 +27,7 @@ class CCollector;
 
 class CSession {
    private:
-    tm *tm;  // C++ time pointer
+    std::tm *tm;  // C++ time pointer
 
     time_t sessDate;  // Session date
 
