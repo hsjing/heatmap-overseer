@@ -29,13 +29,13 @@ class CSession {
 
     time_t sessDate;  // Session date
 
-    std::vector<float> sessBuf;  // Temporary session buffer
+    vector<float> sessBuf;  // Temporary session buffer
 
-    std::mutex sessBufMu;  // Session data buffer locking
+    mutex sessBufMu;  // Session data buffer locking
 
     // public:
-    std::string server, username, password, portNumber;  // Access credentials
-    std::string dateStr;  // Session date in std::string form
+    string server, username, password, portNumber;  // Access credentials
+    string dateStr;  // Session date in string form
 
     bool EXIT_FLAG;
     bool COLLECT_FLAG;
@@ -90,7 +90,7 @@ class CSession {
      * @brief Updates the table through connection socket
      *
      */
-    void updateTable(void);
+    void updateSocket(void);
 
     /**
      * @brief Runs the collector/socket threads

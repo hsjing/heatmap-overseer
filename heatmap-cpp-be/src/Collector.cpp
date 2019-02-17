@@ -28,20 +28,20 @@ void CCollector::collect(void) {
 
         // Flatten and clone the current UART buffer, and check if all nodes
         // have viable data. If so, throw colCompleteFlag
-        std::vector<float> flatTemp;
+        vector<float> flatTemp;
 
-        std::transform(colUart->tempData.begin(),
-                       colUart->tempData.end(),  // Flatten vector
-                       back_inserter(flatTemp),
-                       [&flatTemp](const std::pair<float, float>& p) {
-                           flatTemp.push_back(p.first);
-                           return p.second;
-                       });
+        transform(colUart->tempData.begin(),
+                  colUart->tempData.end(),  // Flatten vector
+                  back_inserter(flatTemp),
+                  [&flatTemp](const pair<float, float>& p) {
+                      flatTemp.push_back(p.first);
+                      return p.second;
+                  });
 
         // If all values are non-dummy, or if collector timeouts, exit
         // collection
-        if (std::none_of(flatTemp.begin(), flatTemp.end(),
-                         [](float i) { return i != -300.0; }) ||
+        if (none_of(flatTemp.begin(), flatTemp.end(),
+                    [](float i) { return i != -300.0; }) ||
             collectCounter > 100)
             COLLECTOR_EXIT = 1;
 

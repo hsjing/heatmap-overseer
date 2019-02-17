@@ -26,7 +26,7 @@ class CUart {
         digital2[256],  // Digital buffer 2
         data[1];        // Data buffer
 
-    std::string analog;  // Analog data string
+    string analog;  // Analog data string
 
     float fDigi1,  // Digital data to nearest degree
         fDigi2,    // Digital data to nearest 0.0625 of a degree
@@ -40,8 +40,7 @@ class CUart {
     // Temperature data vector, each node represented by vector
     // element and each element has a pair of values (analog and
     // digital)
-    std::vector<std::pair<float, float>> tempData =
-        std::vector<std::pair<float, float>>(36);
+    vector<pair<float, float>> tempData = vector<pair<float, float>>(36);
 
     /**
      * @brief Construct a new CUart object

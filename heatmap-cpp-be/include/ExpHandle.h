@@ -2,4 +2,4 @@
 #pragma once
 #include "stdafx.h"
 
-void ExpHandle(std::string funct, sql::SQLException& e);
+void ExpHandle(string funct, sql::SQLException& e);

@@ -43,8 +43,7 @@ class CDBSocket {
      * @param pass Password
      * @param date Date of session
      */
-    void initDBConn(std::string serv, std::string uname, std::string pass,
-                    std::string date);
+    void initDBConn(string serv, string uname, string pass, string date);
 
     /**
      * @brief Attempts to make a table corresponding to the current session date
@@ -52,13 +51,22 @@ class CDBSocket {
      * @param currDateStr The current date
      * @return int Operation status
      */
-    int makeTable(std::string currDateStr);
+    int makeTable(string currDateStr);
 
     /**
-     * @brief
+     * @brief Checks whether table exists for current date
      *
      * @param currDateStr The current date
      * @return int Operation status
      */
-    int checkTable(std::string currDateStr);
+    int checkTable(string currDateStr);
+
+    /**
+     * @brief Inserts current buffer of data into table and timestamp it
+     *
+     * @param timeStamp Timestamp string
+     * @param sessionBuffer Current temperature data buffer
+     * @return int Operation status
+     */
+    int updateTable(string timeStamp, vector<float> sessionBuffer);
 };

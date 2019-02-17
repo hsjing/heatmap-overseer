@@ -2,7 +2,6 @@
  * @file Session.cpp
  * @author Jing Huang (seojeung.h@gmail.com)
  * @brief Session object
- * manages their threads
  * @version 0.1
  * @date 2019-01-28
  *
@@ -21,30 +20,30 @@ CSession::CSession() {
 CSession::~CSession() {}
 
 void CSession::initSession(void) {
-    std::string connChoice = "";
+    string connChoice = "";
 
     // Prompt for local connection (so far, only local is implemented)
     while (connChoice != "Y" && connChoice != "N") {
-        std::cout << "Would you like to connect locally? (Y/N)";
-        std::cin >> connChoice;
+        cout << "Would you like to connect locally? (Y/N)";
+        cin >> connChoice;
     }
 
     // Make local connection
     if (connChoice == "Y" || connChoice == "y") {
         /*
         // Specify port number
-        std::cout << "Specify port for local connection:";
-        std::cin >> portNumber;
+        cout << "Specify port for local connection:";
+        cin >> portNumber;
         server = "tcp://127.0.0.1:" + portNumber;
 
         // Specify credentials
-        std::cout << "Enter your username:";
-        std::cin >> username;
+        cout << "Enter your username:";
+        cin >> username;
 
-        std::cout << "Enter your password:";
-        std::cin >> password;
+        cout << "Enter your password:";
+        cin >> password;
 
-        std::cout << endl;
+        cout << endl;
         */
 
         server = "tcp://127.0.0.1:3306";
@@ -55,7 +54,7 @@ void CSession::initSession(void) {
 
     } else if (connChoice == "N" ||
                connChoice == "n")  // TODO - add some exception handling here
-        std::cout << "Goodbye!";
+        cout << "Goodbye!";
 }
 
 // TODO - find better way of doing this?
@@ -75,7 +74,7 @@ void CSession::collectData(void) {
         // Collect data into collector buffer
         sessCol->collect();
 
-        // Load into session buffer vector
+        // Load into session data buffer
         sessBufMu.lock();
         for (int i = 0; i < sizeof(sessCol->colBuf); i++) {
             this->sessBuf.push_back(sessCol->colBuf[i]);
@@ -87,11 +86,11 @@ void CSession::collectData(void) {
     }
 }
 
-void CSession::updateTable(void) {
+void CSession::updateSocket(void) {
     while (UPDATE_FLAG) {
         // Clone session data buffer
         sessBufMu.lock();
-        std::vector<float> updateBuf = this->sessBuf;
+        vector<float> updateBuf = this->sessBuf;
         sessBufMu.unlock();
 
         // Get current time
@@ -101,13 +100,16 @@ void CSession::updateTable(void) {
         string timeStampStr = tm->tm_hour + ":" + tm->tm_min + ":" + tm->tm_sec;
 
         // Insert into table
+        if (sessSock->updateTable(timeStampStr, updateBuf)) {
+            cout << "Table updated for " << timeStampStr << endl;
+        }
     }
 }
 
 void CSession::runThreads(void) {
     // Run the threads
-    std::thread collectThread(std::bind(&CSession::collectData, this));
-    std::thread socketThread(std::bind(&CSession::updateTable, this));
+    thread collectThread(bind(&CSession::collectData, this));
+    thread socketThread(bind(&CSession::updateTable, this));
 
     collectThread.join();
     socketThread.join();

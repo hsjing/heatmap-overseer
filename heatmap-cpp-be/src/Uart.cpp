@@ -33,7 +33,7 @@ CUart::~CUart() {
 }
 
 void CUart::resetTempBuf(void) {
-    tempData = vector<pair<float, float>>(36, std::make_pair(-300.0, -300.0));
+    tempData = vector<pair<float, float>>(36, make_pair(-300.0, -300.0));
 }
 
 void CUart::uartRx(void) {
