@@ -51,9 +51,10 @@ void CDBSocket::initDBConn(string serv, string uname, string pass,
 int CDBSocket::makeTable(string currDateStr) {
     // If table for the date is not found, one is created
     if (!(this->checkTable(currDateStr))) {
-        string tableMakStmt = "CREATE TABLE IF NOT EXISTS " + currDateStr +
-                              "(stamp TIME, N1 float, N2 float, N3 float, N4 "
-                              "float, N5 float, N6 float, N7 float, N8 float);";
+        string tableMakStmt =
+            "CREATE TABLE IF NOT EXISTS " + currDateStr +
+            "(stamp VARCHAR(8), N1 float, N2 float, N3 float, N4 "
+            "float, N5 float, N6 float, N7 float, N8 float);";
 
         sql::SQLString tableMakQuery(tableMakStmt);
 
@@ -108,5 +109,26 @@ int CDBSocket::checkTable(string currDateStr) {
 }
 
 int CDBSocket::updateTable(string timeStamp, vector<float> sessionBuffer) {
-    return 1;
+    string updateStmt =
+        "INSERT INTO " + currDateStr + " VALUES (" + "'" + timeStamp + "'," +
+        "'" + sessionBuffer[0] + "'," + "'" + sessionBuffer[1] + "'," + "'" +
+        sessionBuffer[2] + "'," + "'" + sessionBuffer[3] + "'," + "'" +
+        sessionBuffer[4] + "'," + "'" + sessionBuffer[5] + "'," + "'" +
+        sessionBuffer[6] + "'," + "'" + sessionBuffer[7] + "');";
+
+    sql::SQLString updateQuery(updateStmt);
+
+    // Prepare statement
+    dbStmt = dbConn->createStatement();
+
+    try {
+        dbRes = dbStmt->executeQuery(updateQuery);  // Execute query
+
+        delete dbConn;
+        delete dbStmt;
+    } catch (sql::SQLException e) {
+        ExpHandle("updateTable", e);
+
+        return -1;
+    }
 }

@@ -97,12 +97,16 @@ void CSession::updateSocket(void) {
         time_t now = time(0);
         tm = localtime(&now);
 
-        std::string timeStampStr = to_string(tm->tm_hour) + ":" + to_string(tm->tm_min) + ":" + to_string(tm->tm_sec);
+        std::string timeStampStr = to_string(tm->tm_hour) + ":" +
+                                   to_string(tm->tm_min) + ":" +
+                                   to_string(tm->tm_sec);
 
         // Insert into table
-        if (sessSock->updateTable(timeStampStr, updateBuf)) {
+        if (sessSock->updateTable(timeStampStr, updateBuf))
             cout << "Table updated for " << timeStampStr << endl;
-        }
+        else
+            cout << "Table couldn't be updated" << endl;
+
         usleep(10000000);
     }
 }
