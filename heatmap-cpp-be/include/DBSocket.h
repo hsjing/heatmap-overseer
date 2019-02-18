@@ -66,9 +66,10 @@ class CDBSocket {
     /**
      * @brief Inserts current buffer of data into table and timestamp it
      *
+     * @param currDateStr The current date
      * @param timeStamp Timestamp string
      * @param sessionBuffer Current temperature data buffer
      * @return int Operation status
      */
-    int updateTable(string timeStamp, vector<float> sessionBuffer);
+    int updateTable(string currDateStr, string timeStamp, vector<string> sessionBuffer);
 };

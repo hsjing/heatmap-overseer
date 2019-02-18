@@ -18,7 +18,7 @@ CCollector::~CCollector() {}
 
 void CCollector::collect(void) {
     // Reset colBuf to dummy values
-    memset(colBuf, -150.0, sizeof(colBuf));
+    fill(colBuf.begin(), colBuf.end(), -150.0);
     // Reset timeout counter
     int collectCounter = 0;
 

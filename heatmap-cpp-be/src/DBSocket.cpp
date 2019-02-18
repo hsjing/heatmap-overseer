@@ -108,7 +108,10 @@ int CDBSocket::checkTable(string currDateStr) {
     }
 }
 
-int CDBSocket::updateTable(string timeStamp, vector<float> sessionBuffer) {
+int CDBSocket::updateTable(string currDateStr, string timeStamp, vector<string> sessionBuffer) {
+    
+    //cout << sessionBuffer[1] << endl;
+    
     string updateStmt =
         "INSERT INTO " + currDateStr + " VALUES (" + "'" + timeStamp + "'," +
         "'" + sessionBuffer[0] + "'," + "'" + sessionBuffer[1] + "'," + "'" +
@@ -117,6 +120,7 @@ int CDBSocket::updateTable(string timeStamp, vector<float> sessionBuffer) {
         sessionBuffer[6] + "'," + "'" + sessionBuffer[7] + "');";
 
     sql::SQLString updateQuery(updateStmt);
+    
 
     // Prepare statement
     dbStmt = dbConn->createStatement();
@@ -126,6 +130,8 @@ int CDBSocket::updateTable(string timeStamp, vector<float> sessionBuffer) {
 
         delete dbConn;
         delete dbStmt;
+        return 1;
+        
     } catch (sql::SQLException e) {
         ExpHandle("updateTable", e);
 

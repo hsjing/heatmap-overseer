@@ -95,7 +95,7 @@ void CUart::uartRx(void) {
 
             // Otherwise, unhandled error
             else {
-                printf("Unhandled error.\n");
+                // printf("Unhandled error.\n");
             }
 
             iter = 0;  // Reset iterator
