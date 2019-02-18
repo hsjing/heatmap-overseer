@@ -76,15 +76,15 @@ void CSession::collectData(void) {
 
         // Load into session data buffer
         sessBufMu.lock();
-        
+
         // Clear vector
         sessBuf.clear();
-        
+
         // Push elements into vector
         for (int i = 0; i < sessCol->colBuf.size(); i++) {
             this->sessBuf.push_back(sessCol->colBuf[i]);
         }
-        
+
         sessBufMu.unlock();
 
         // Delay collection half a second
@@ -98,12 +98,10 @@ void CSession::updateSocket(void) {
         sessBufMu.lock();
         vector<float> updateBuf = this->sessBuf;
         sessBufMu.unlock();
-        
+
         vector<string> strBuf(updateBuf.size());
-        transform(updateBuf.begin(), updateBuf.end(), strBuf.begin(), [](const float& val)
-        {
-            return to_string(val);
-        });
+        transform(updateBuf.begin(), updateBuf.end(), strBuf.begin(),
+                  [](const float& val) { return to_string(val); });
 
         // Get current time
         time_t now = time(0);
@@ -112,7 +110,7 @@ void CSession::updateSocket(void) {
         std::string timeStampStr = to_string(tm->tm_hour) + ":" +
                                    to_string(tm->tm_min) + ":" +
                                    to_string(tm->tm_sec);
-                                   
+
         // Testing
         for (const auto i : updateBuf) cout << i << endl;
 
@@ -129,8 +127,8 @@ void CSession::updateSocket(void) {
 void CSession::runThreads(void) {
     // Run the threads
     thread collectThread(bind(&CSession::collectData, this));
-    
-    usleep(1000000); // Wait for collector first
+
+    usleep(1000000);  // Wait for collector first
     thread socketThread(bind(&CSession::updateSocket, this));
 
     collectThread.join();
