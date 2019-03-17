@@ -1,11 +1,16 @@
 require('electron-reload')(__dirname);
 
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {
+    app,
+    BrowserWindow,
+    ipcMain
+} = require('electron');
 
 // native c++ addons instantiated here
 // const addon = require('./build/Release/addon');
 
-let mainWindow; let heatmap;
+let mainWindow;
+let heatmap;
 
 /* main direct access to mysql - FOR TESTING PURPOSES
 const mysql = require('mysql');
@@ -31,8 +36,10 @@ connection.connect(function(err) {
  */
 function createMainWindow() {
     mainWindow = new BrowserWindow({
-        width: 700, height: 700,
-        maxWidth: 700, maxHeight: 700,
+        width: 700,
+        height: 700,
+        maxWidth: 700,
+        maxHeight: 700,
         backgroundColor: '#FFF',
         frame: false,
     });
@@ -68,7 +75,10 @@ app.on('activate', () => {
  */
 function createHeatmap() {
     heatmap = new BrowserWindow({
-        width: 700, height: 680, resizable: false, backgroundColor: '#FFF',
+        width: 700,
+        height: 680,
+        resizable: false,
+        backgroundColor: '#FFF',
         frame: false,
     });
 
@@ -107,4 +117,3 @@ ipcMain.on('minimize-main', () => {
         mainWindow.minimize();
     }
 });
-

@@ -6,7 +6,9 @@
  * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>
  */
 
-const {ipcRenderer} = require('electron');
+const {
+    ipcRenderer
+} = require('electron');
 
 let monthDict = {
     1: 'January',
@@ -33,16 +35,16 @@ const monthSelBac = document.getElementById('monthSelBac');
 const daysCollection = document.getElementsByClassName('weekdays');
 
 // Clicking close or minimize buttons
-exit.addEventListener('click', function(event) {
+exit.addEventListener('click', function (event) {
     ipcRenderer.send('quit-all');
 });
 
-minimize.addEventListener('click', function(event) {
+minimize.addEventListener('click', function (event) {
     ipcRenderer.send('minimize-main');
 });
 
 // Clicking month selectors (forward)
-monthSelBac.addEventListener('click', function(event) {
+monthSelBac.addEventListener('click', function (event) {
     if (currentMonth == 1) {
         currentMonth = 12;
         currentYear--;
@@ -53,7 +55,7 @@ monthSelBac.addEventListener('click', function(event) {
 });
 
 // (backward)
-monthSelFor.addEventListener('click', function(event) {
+monthSelFor.addEventListener('click', function (event) {
     if (currentMonth == 12) {
         currentMonth = 1;
         currentYear++;
@@ -64,7 +66,7 @@ monthSelFor.addEventListener('click', function(event) {
 });
 
 // Clicking home
-homeSel.addEventListener('click', function(event) {
+homeSel.addEventListener('click', function (event) {
     let d = new Date();
     currentMonth = d.getMonth() + 1;
     currentYear = d.getFullYear();
@@ -75,7 +77,7 @@ homeSel.addEventListener('click', function(event) {
  * Update the month displayed
  */
 function updateMonth() {
-    let firstDayOfMonth = new Date(currentYear, currentMonth-1, 1);
+    let firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1);
     let firstWeekday = firstDayOfMonth.getDay();
     let daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
@@ -84,7 +86,7 @@ function updateMonth() {
     }
 
     for (let i = 0; i < daysInMonth; i++) {
-        daysCollection[firstWeekday+i].innerHTML = i+1;
+        daysCollection[firstWeekday + i].innerHTML = i + 1;
     }
     document.getElementById('currentYear').innerHTML = currentYear;
     document.getElementById('currentMonth').innerHTML = monthDict[currentMonth];
@@ -94,13 +96,11 @@ updateMonth();
 
 for (let item of daysCollection) {
     // on click, open heatmap with attributes date, month, year
-    item.addEventListener('click', function(event) {
+    item.addEventListener('click', function (event) {
         ipcRenderer.send('open-heatmap',
-        item.innerHTML, // date
-        currentMonth, // month
-        currentYear // year
-    );
-});
+            item.innerHTML, // date
+            currentMonth, // month
+            currentYear // year
+        );
+    });
 }
-
-
