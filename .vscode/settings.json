@@ -4,6 +4,15 @@
         "xstring": "cpp",
         "algorithm": "cpp",
         "list": "cpp",
-        "vector": "cpp"
-    }
+        "vector": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "queue": "cpp",
+        "type_traits": "cpp",
+        "xhash": "cpp",
+        "xutility": "cpp",
+        "utility": "cpp"
+    },
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "yapf"
 }
