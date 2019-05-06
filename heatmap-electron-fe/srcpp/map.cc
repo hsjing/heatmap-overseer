@@ -49,22 +49,27 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
                                                    std::make_pair(-1, -1));
 
     for (int i = 1; i <= knownCoordVec.size(); i++) {
-        knownCoordVec[i - 1].first = coordArray->Get(i - 1)->NumberValue();
+        knownCoordVec[i - 1].first =
+            coordArray->Get((i << 1) - 2)->NumberValue();
         knownCoordVec[i - 1].second =
             coordArray->Get((i << 1) - 1)->NumberValue();
     }
 
     // construct a 2d grid of vectors containing coordinate of every pixel AND
-    // the distance to each known node (total of 2 + nodeCount elements in each)
+    // the euclidean distance to each node (note that we use Shepard's IDW
+    // interpolation with p = 2, meaning we can directly use the square of the
+    // distance during rendering)
     std::vector<std::vector<int>> heatmapGrid(DIMENSIONS,
                                               std::vector<int>(2 + nodeCount));
 
-    // [distToNode0, distToNode1... distToNodeN, x, y]
+    // [weigh0, weight1... weightN, x, y]
     for (int i = 0; i < heatmapGrid.size(); i++) {
-        // pixel x and y are the modulo and dividend of WIDTH
+        // pixel x and y are the modulo and dividend of WIDTH, store in last two
+        // elements for each pixel
         heatmapGrid[i][nodeCount] = i % WIDTH;
         heatmapGrid[i][nodeCount + 1] = i / WIDTH;
 
+        // fill with squared distance values
         for (int j = 0; j < nodeCount; j++) {
             heatmapGrid[i][j] = distanceSqr(
                 heatmapGrid[i][nodeCount], heatmapGrid[i][nodeCount + 1],
@@ -73,11 +78,11 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     }
 
     // construct heatmap arrays
-    std::vector<std::vector<int>> heatmapCollection(
-        heatmapCount, std::vector<int>(DIMENSIONS));
+    std::vector<std::vector<float>> heatmapCollection(
+        heatmapCount, std::vector<float>(DIMENSIONS));
 
     // rendering happens here
-    for (int i = 0; i < heatmapCount; i++) {
+    for (int i = 0; i < heatmapCollection.size(); i++) {
         // gather sensor data
         sensorDataArray = Local<Array>::Cast(parentData->Get(i + 1));
 
@@ -87,14 +92,22 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
         }
 
         for (int j = 0; j < DIMENSIONS; j++) {
+            float num = 0.0, denom = 0.0;
             for (int k = 0; k < nodeCount; k++) {
+                // sensor data / distance
+                num += float(sensorDataVec[k]) / float(heatmapGrid[j][k]);
+                // 1 distance
+                denom += 1 / float(heatmapGrid[j][k]);
             }
+            heatmapCollection[i][j] = num / denom;
             // assignment is faster if we ensure there is no size mismatch
             // heatmapCollection[i][j] = heatmapGrid[j].first;
         }
     }
 
-    int coordLength = sensorDataVec[7];
+    // float coordLength = heatmapGrid[160900][7];
+    float coordLength = heatmapCollection[0][40091];
+    // float coordLength = knownCoordVec[7].first;
     std::string text = std::to_string(coordLength);
 
     args.GetReturnValue().Set(String::NewFromUtf8(isolate, text.c_str()));
@@ -108,7 +121,7 @@ int distanceSqr(int x0, int y0, int x1, int y1) {
     int delX = abs(x1 - x0);
     int delY = abs(y1 - y0);
 
-    return delX * delX + delY * delY;
+    return (delX * delX) + (delY * delY);
 }
 
 NODE_MODULE(addon, init)
