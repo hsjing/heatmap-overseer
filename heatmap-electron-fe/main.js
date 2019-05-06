@@ -1,10 +1,47 @@
 require('electron-reload')(__dirname);
+const {
+    PerformanceObserver,
+    performance
+} = require('perf_hooks');
 
 const {
     app,
     BrowserWindow,
     ipcMain
 } = require('electron');
+
+const addon = require('./build/Release/addon');
+
+// testing area
+var end = 8;
+var start = 0;
+
+var test_data = [
+    [
+        50, 50, // node a
+        50, 100, // node b
+        50, 150, // node c
+        50, 200, // node e
+        100, 50, // node f
+        100, 100, // node g
+        100, 150, // node h
+        100, 200 // node i
+    ],
+    // a, b, c, d, e, f, g, h, i
+    [21, 21, 50, 10, 20, 20, 24, 190],
+    [21, 21, 50, 10, 20, 20, 24, 190],
+    [21, 21, 50, 10, 20, 20, 24, 190],
+    [21, 21, 50, 10, 20, 20, 24, 190],
+    [21, 21, 50, 10, 20, 20, 24, 121]
+]
+
+
+var t0 = performance.now();
+console.log(addon.renderHeatmap(test_data));
+var t1 = performance.now();
+
+console.log("Call to test took " + (t1 - t0) + " milliseconds.");
+
 
 // native c++ addons instantiated here
 // const addon = require('./build/Release/addon');
