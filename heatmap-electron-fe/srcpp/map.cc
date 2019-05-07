@@ -1,4 +1,5 @@
 // hello.cc
+#include <nan.h>
 #include <node.h>
 
 #include <iostream>
@@ -9,6 +10,7 @@ namespace demo {
 
 using v8::Array;
 using v8::Exception;
+using v8::Float32Array;
 using v8::FunctionCallbackInfo;
 using v8::Isolate;
 using v8::Local;
@@ -38,6 +40,18 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     v8::Local<Array> coordArray = Local<Array>::Cast(parentData->Get(0));
     v8::Local<Array> sensorDataArray;
 
+    // the complete heatmap collection (288 heatmaps in total)
+    v8::Local<Array> returnHeatmapCollection = v8::Array::New(isolate);
+
+    // a temporary heatmap in the form of a v8 Float32Array (note size is 4 *
+    // DIMENSIONS due to 'float' being 4 bytes, we'll directly access the values
+    // in memory)
+    v8::Local<Float32Array> tempHeatmap = v8::Float32Array::New(
+        v8::ArrayBuffer::New(isolate, 4 * DIMENSIONS), 0, DIMENSIONS);
+
+    // wrap tempHeatmap in Nan to expose helper function, namely * operator
+    Nan::TypedArrayContents<float> dest(tempHeatmap);
+
     int nodeCount = coordArray->Length() >> 1;
     int heatmapCount = parentData->Length() - 1;
 
@@ -62,7 +76,7 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     std::vector<std::vector<int>> heatmapGrid(DIMENSIONS,
                                               std::vector<int>(2 + nodeCount));
 
-    // [weigh0, weight1... weightN, x, y]
+    // [dist0, dist1... weightN, x, y]
     for (int i = 0; i < heatmapGrid.size(); i++) {
         // pixel x and y are the modulo and dividend of WIDTH, store in last two
         // elements for each pixel
@@ -94,29 +108,42 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
         for (int j = 0; j < DIMENSIONS; j++) {
             float num = 0.0, denom = 0.0;
             for (int k = 0; k < nodeCount; k++) {
-                // sensor data / distance
-                num += float(sensorDataVec[k]) / float(heatmapGrid[j][k]);
-                // 1 distance
-                denom += 1 / float(heatmapGrid[j][k]);
+                // if a distance of 0 exists, load that data and break;
+                if (heatmapGrid[j][k] == 0.0) {
+                    num = sensorDataVec[k];
+                    denom = 1;
+                    break;
+                }
+                // else calculate using IDW
+                else {
+                    // sensor data / distance
+                    num += float(sensorDataVec[k]) / float(heatmapGrid[j][k]);
+                    // 1 / distance
+                    denom += 1 / float(heatmapGrid[j][k]);
+                }
             }
+            (*dest)[j] = num / denom;
             heatmapCollection[i][j] = num / denom;
-            // assignment is faster if we ensure there is no size mismatch
-            // heatmapCollection[i][j] = heatmapGrid[j].first;
         }
+
+        returnHeatmapCollection->Set(i, tempHeatmap);
     }
 
     // float coordLength = heatmapGrid[160900][7];
-    float coordLength = heatmapCollection[0][40091];
+    // float coordLength = heatmapCollection[0][480000];
     // float coordLength = knownCoordVec[7].first;
+    float coordLength = returnHeatmapCollection->Length();
     std::string text = std::to_string(coordLength);
 
-    args.GetReturnValue().Set(String::NewFromUtf8(isolate, text.c_str()));
+    // args.GetReturnValue().Set(String::NewFromUtf8(isolate, text.c_str()));
+    args.GetReturnValue().Set(returnHeatmapCollection);
 }
 
 void init(Local<Object> exports) {
     NODE_SET_METHOD(exports, "renderHeatmap", renderHeatmap);
 }
 
+// do we need this?
 int distanceSqr(int x0, int y0, int x1, int y1) {
     int delX = abs(x1 - x0);
     int delY = abs(y1 - y0);
