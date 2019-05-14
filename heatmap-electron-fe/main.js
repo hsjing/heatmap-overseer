@@ -29,7 +29,6 @@ var test_data = [
 
 ]
 var hmCol = renderer.renderHeatmap(test_data);
-console.log(hmCol);
 
 /* main direct access to mysql - FOR TESTING PURPOSES
 const mysql = require('mysql');
@@ -101,9 +100,9 @@ app.on('activate', () => {
 function createHeatmap() {
     heatmap = new BrowserWindow({
         width: 800,
-        height: 640,
+        height: 680,
         maxWidth: 800,
-        maxHeight: 640,
+        maxHeight: 680,
         backgroundColor: '#FFF',
         frame: false,
         webPreferences: {

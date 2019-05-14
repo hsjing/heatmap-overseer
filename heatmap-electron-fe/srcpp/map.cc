@@ -10,8 +10,9 @@ namespace demo {
 
 using v8::Array;
 using v8::Exception;
-using v8::Float32Array;
+// using v8::Float32Array;
 using v8::FunctionCallbackInfo;
+using v8::Int32Array;
 using v8::Isolate;
 using v8::Local;
 using v8::Number;
@@ -27,6 +28,23 @@ using v8::Value;
 int distanceSqr(int, int, int, int);
 
 void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
+    // temporary values hardcoded into the addon, should be passed from fe
+    int minT = 15;
+    int maxT = 35;
+    int range = maxT - minT;
+
+    int r0 = 255;
+    int g0 = 155;
+    int b0 = 207;
+
+    int r1 = 63;
+    int g1 = 77;
+    int b1 = 255;
+
+    int rDif = r0 - r1;
+    int gDif = g0 - g1;
+    int bDif = b0 - b1;
+
     Isolate* isolate = args.GetIsolate();
 
     if (args.Length() != 1) {
@@ -87,7 +105,7 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     std::vector<std::vector<float>> heatmapCollection(
         heatmapCount, std::vector<float>(DIMENSIONS));
 
-    float testa;
+    // float testa;
 
     // rendering happens here
     for (int i = 0; i < heatmapCollection.size(); i++) {
@@ -95,8 +113,8 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
         // is 4 *
         // DIMENSIONS due to 'float' being 4 bytes, we'll directly access
         // the values in memory)
-        v8::Local<Float32Array> tempHeatmap = v8::Float32Array::New(
-            v8::ArrayBuffer::New(isolate, 4 * DIMENSIONS), 0, DIMENSIONS);
+        v8::Local<Int32Array> tempHeatmap = v8::Int32Array::New(
+            v8::ArrayBuffer::New(isolate, 16 * DIMENSIONS), 0, 4 * DIMENSIONS);
         // gather sensor data
         v8::Local<Array> sensorDataArray =
             Local<Array>::Cast(parentData->Get(i + 1));
@@ -124,15 +142,22 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
                 }
             }
 
-            Nan::TypedArrayContents<float> dest(tempHeatmap);
-            (*dest)[j] = num / denom;
+            // derived temperature value
+            float tempVal = (num / denom) - minT;
+
+            Nan::TypedArrayContents<int> dest(tempHeatmap);
+
+            (*dest)[4 * j] = (int)(r1 + rDif * tempVal / range);
+            (*dest)[4 * j + 1] = (int)(g1 + gDif * tempVal / range);
+            (*dest)[4 * j + 2] = (int)(b1 + bDif * tempVal / range);
+            (*dest)[4 * j + 3] = (int)(255);
         }
         returnHeatmapCollection->Set(i, tempHeatmap);
-        testa = returnHeatmapCollection->Get(i)->NumberValue();
+        // testa = returnHeatmapCollection->Get(i)->NumberValue();
     }
 
-    float coordLength = testa;
-    std::string text = std::to_string(coordLength);
+    // float coordLength = testa;
+    // std::string text = std::to_string(coordLength);
 
     // args.GetReturnValue().Set(String::NewFromUtf8(isolate, text.c_str()));
     args.GetReturnValue().Set(returnHeatmapCollection);
