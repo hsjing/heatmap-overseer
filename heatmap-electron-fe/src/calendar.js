@@ -40,7 +40,7 @@ exit.addEventListener('click', function (event) {
 });
 
 minimize.addEventListener('click', function (event) {
-    ipcRenderer.send('minimize-main');
+    ipcRenderer.send('minimize-calendar');
 });
 
 // Clicking month selectors (forward)
@@ -82,7 +82,7 @@ function updateMonth() {
     let daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
     for (let i = 0; i < daysCollection.length; i++) {
-        daysCollection[i].innerHTML = '';
+        daysCollection[i].innerHTML = '1';
     }
 
     for (let i = 0; i < daysInMonth; i++) {

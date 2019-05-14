@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>    
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../assets/css/calendar.css">
+    <link rel="stylesheet" href="../assets/css/heatmap.css">
 </head>
+
 <body>
     <div class="top-row">
         <button class="buttons" id="exit">⨉</button>
-        <button class="buttons" id="minimize">–</button>       
+        <button class="buttons" id="minimize">–</button>
+    </div>
+    <div class="range-slider">
+        <input type="range" min="range-min" max="range-max" class="slider" id="heatmap-slider">
+    </div>
+    <div class="heatmap">
+        <canvas id="node-layout" width="800px" height="600px"></canvas>
+        <canvas id="heatmap-canvas" width="800px" height="600px"></canvas>
+        <img id="room-layout" src="../assets/png/work5.png" style="width:800px; height:600px;">
     </div>
     <script src="heatmap.js"></script>
 </body>

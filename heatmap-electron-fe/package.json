@@ -12,15 +12,15 @@
   "author": "Jing Huang",
   "license": "MIT",
   "dependencies": {
-    "electron": "^2.0.2",
+    "electron": "^5.0.1",
     "mysql": "^2.15.0",
     "nan": "^2.10.0",
-    "npm": "^6.4.1"
+    "npm": "^6.9.0"
   },
   "devDependencies": {
-    "electron-rebuild": "^1.8.1",
-    "electron-reload": "^1.2.2",
-    "eslint": "^5.2.0",
+    "electron-rebuild": "^1.8.4",
+    "electron-reload": "^1.4.0",
+    "eslint": "^5.16.0",
     "eslint-config-google": "^0.9.1"
   }
 }

@@ -1,50 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400');
+
+:root {
+    --window-width: 800px;
+    --date-font: 18pt;
+    --tx-duration: 0.15s;
+}
+
 body {
-    background-color: white
+    background: white;
+    color: #fff;
+    font-family: 'Roboto Condensed';
+    margin: 0px;
+    padding: 0px;
+    width: var(--window-width);
 }
 
-h1 {
-    font-family: Arial, Helvetica, sans-serif;
-    color: white
+.top-row {
+    background: #3F51B5;
+    -webkit-app-region: drag;
+    width: var(--window-width);
+    height: 20px;
+    margin: 0px;
 }
 
-#monthSelFor {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+.top-row .buttons {
+    font-size: 12pt;
+    height: 20px;
+    width: 20px;
+    padding: 0px;
+    transition-duration: var(--tx-duration);
+}
+
+.top-row .buttons:focus {
+    outline: 0;
+}
+
+.top-row .buttons:hover {
     background-color: white;
+    color: #3F51B5;
     border: none;
-    color: slateblue;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 30px;
-    margin: 4px 2px;
+    z-index: 1;
+}
+
+button {
+    -webkit-app-region: no-drag;
+    float: right;
+    background: #3F51B5;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px;
     cursor: pointer;
-    transition-duration: 0.4s;
 }
 
-#monthSelFor:hover {
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+.heatmap {
+    width: 100%;
+    height: 600px;
+    margin-top: 0px;
 }
 
-#monthSelBac {
+.range-slider {
+    width: 100%;
+    height: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    width: 100%;
+    margin: 0px;
+    /* Full-width */
+    height: 20px;
+    /* Specified height */
+    background: white;
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    opacity: 0.8;
+    /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s;
+    /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 20px;
+    /* Slider handle height */
+    background: #3F51B5;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+}
+
+#heatmap-canvas {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: white;
-    border: none;
-    color: slateblue;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 30px;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition-duration: 0.4s;
 }
 
-#monthSelBac:hover {
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+#room-layout {
+    position: absolute;
+}
+
+#node-layout {
+    position: absolute;
 }

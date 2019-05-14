@@ -1,11 +1,7 @@
 {
     "targets": [{
-        "target_name": "addon",
-        "sources": [
-            "srcpp/map.cc"
-            #"srcpp/addon.cc",
-            #"srcpp/async_render.cc"
-        ],
+        "target_name": "renderer",
+        "sources": ["srcpp/map.cc"],
         "include_dirs": ["<!(node -e \"require('nan')\")"]
     }]
 }

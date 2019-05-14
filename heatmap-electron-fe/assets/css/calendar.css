@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400');
 
-:root{
+:root {
     --window-width: 700px;
     --home-row-height: 60px;
     --date-font: 18pt;
@@ -9,7 +9,7 @@
 
 body {
     background: white;
-    color:#fff;
+    color: #fff;
     font-family: 'Roboto Condensed';
     margin: 0px;
     padding: 0px;
@@ -17,8 +17,8 @@ body {
 }
 
 .top-row {
-    background:#3F51B5;
-    -webkit-app-region: drag;    
+    background: #3F51B5;
+    -webkit-app-region: drag;
     width: var(--window-width);
     height: 20px;
     margin: 0px;
@@ -32,20 +32,23 @@ body {
     transition-duration: var(--tx-duration);
 }
 
-.top-row .buttons:focus {outline:0;}
+.top-row .buttons:focus {
+    outline: 0;
+}
+
 .top-row .buttons:hover {
     background-color: white;
     color: #3F51B5;
     border: none;
-    z-index:1;
+    z-index: 1;
 }
 
 .util-row {
     -webkit-app-region: drag;
-    background:#3F51B5;
-    width:100%;
+    background: #3F51B5;
+    width: 100%;
     height: var(--home-row-height);
-    margin-top:0px;
+    margin-top: 0px;
     display: grid;
     align-items: center;
 }
@@ -56,12 +59,15 @@ body {
     transition-duration: var(--tx-duration);
 }
 
-.util-row .buttons:focus {outline:0;}
+.util-row .buttons:focus {
+    outline: 0;
+}
+
 .util-row .buttons:hover {
     background-color: rgb(31, 41, 95);
-    box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.24);
     border: none;
-    z-index:1;
+    z-index: 1;
 }
 
 /* month selectors */
@@ -69,6 +75,7 @@ body {
     position: absolute;
     right: 40px;
 }
+
 #monthSelFor {
     position: absolute;
     right: 0px;
@@ -102,10 +109,11 @@ body {
     vertical-align: middle;
     font-size: var(--date-font);
 }
+
 #currentYear {
     padding-left: 10px;
     position: relative;
-    text-align: left;    
+    text-align: left;
     vertical-align: middle;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -129,7 +137,8 @@ img {
     width: 100px;
     background-color: white;
     text-align: center;
-    color: rgb(31, 41, 95);;
+    color: rgb(31, 41, 95);
+    ;
 }
 
 /* 42 day grid labels */
@@ -153,16 +162,20 @@ img {
     background-color: rgb(31, 41, 95);
     color: white;
     border: none;
-    z-index:1;
+    z-index: 1;
 }
 
 button {
     -webkit-app-region: no-drag;
-    float:right;
-    background:#3F51B5;
-    border:none;
-    color:white;
-    text-transform:uppercase;
-    padding:10px;    
-    cursor:pointer;
+    float: right;
+    background: #3F51B5;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#heatmap-canvas {
+    margin: 0px;
 }

@@ -38,19 +38,11 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     // decouple v8 array into something workable
     v8::Local<Array> parentData = Local<Array>::Cast(args[0]);
     v8::Local<Array> coordArray = Local<Array>::Cast(parentData->Get(0));
-    v8::Local<Array> sensorDataArray;
 
     // the complete heatmap collection (288 heatmaps in total)
     v8::Local<Array> returnHeatmapCollection = v8::Array::New(isolate);
 
-    // a temporary heatmap in the form of a v8 Float32Array (note size is 4 *
-    // DIMENSIONS due to 'float' being 4 bytes, we'll directly access the values
-    // in memory)
-    v8::Local<Float32Array> tempHeatmap = v8::Float32Array::New(
-        v8::ArrayBuffer::New(isolate, 4 * DIMENSIONS), 0, DIMENSIONS);
-
     // wrap tempHeatmap in Nan to expose helper function, namely * operator
-    Nan::TypedArrayContents<float> dest(tempHeatmap);
 
     int nodeCount = coordArray->Length() >> 1;
     int heatmapCount = parentData->Length() - 1;
@@ -95,14 +87,23 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     std::vector<std::vector<float>> heatmapCollection(
         heatmapCount, std::vector<float>(DIMENSIONS));
 
+    float testa;
+
     // rendering happens here
     for (int i = 0; i < heatmapCollection.size(); i++) {
+        // a temporary heatmap in the form of a v8 Float32Array (note size
+        // is 4 *
+        // DIMENSIONS due to 'float' being 4 bytes, we'll directly access
+        // the values in memory)
+        v8::Local<Float32Array> tempHeatmap = v8::Float32Array::New(
+            v8::ArrayBuffer::New(isolate, 4 * DIMENSIONS), 0, DIMENSIONS);
         // gather sensor data
-        sensorDataArray = Local<Array>::Cast(parentData->Get(i + 1));
+        v8::Local<Array> sensorDataArray =
+            Local<Array>::Cast(parentData->Get(i + 1));
 
         // fill vector with sensor values
-        for (int i = 0; i < nodeCount; i++) {
-            sensorDataVec[i] = sensorDataArray->Get(i)->NumberValue();
+        for (int a = 0; a < nodeCount; a++) {
+            sensorDataVec[a] = sensorDataArray->Get(a)->NumberValue();
         }
 
         for (int j = 0; j < DIMENSIONS; j++) {
@@ -122,17 +123,15 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
                     denom += 1 / float(heatmapGrid[j][k]);
                 }
             }
-            (*dest)[j] = num / denom;
-            heatmapCollection[i][j] = num / denom;
-        }
 
+            Nan::TypedArrayContents<float> dest(tempHeatmap);
+            (*dest)[j] = num / denom;
+        }
         returnHeatmapCollection->Set(i, tempHeatmap);
+        testa = returnHeatmapCollection->Get(i)->NumberValue();
     }
 
-    // float coordLength = heatmapGrid[160900][7];
-    // float coordLength = heatmapCollection[0][480000];
-    // float coordLength = knownCoordVec[7].first;
-    float coordLength = returnHeatmapCollection->Length();
+    float coordLength = testa;
     std::string text = std::to_string(coordLength);
 
     // args.GetReturnValue().Set(String::NewFromUtf8(isolate, text.c_str()));
@@ -148,7 +147,7 @@ int distanceSqr(int x0, int y0, int x1, int y1) {
     int delX = abs(x1 - x0);
     int delY = abs(y1 - y0);
 
-    return (delX * delX) + (delY * delY);
+    return pow(((delX * delX) + (delY * delY)), 1.5);
 }
 
 NODE_MODULE(addon, init)
