@@ -82,7 +82,7 @@ function updateMonth() {
     let daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
     for (let i = 0; i < daysCollection.length; i++) {
-        daysCollection[i].innerHTML = '1';
+        daysCollection[i].innerHTML = '';
     }
 
     for (let i = 0; i < daysInMonth; i++) {
