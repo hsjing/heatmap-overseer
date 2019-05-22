@@ -60,8 +60,6 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     // the complete heatmap collection (288 heatmaps in total)
     v8::Local<Array> returnHeatmapCollection = v8::Array::New(isolate);
 
-    // wrap tempHeatmap in Nan to expose helper function, namely * operator
-
     int nodeCount = coordArray->Length() >> 1;
     int heatmapCount = parentData->Length() - 1;
 
@@ -144,6 +142,9 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
 
             // derived temperature value
             float tempVal = (num / denom) - minT;
+
+            // wrap tempHeatmap in Nan to expose helper function, namely *
+            // operator
 
             Nan::TypedArrayContents<int> dest(tempHeatmap);
 
