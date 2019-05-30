@@ -1,21 +1,27 @@
-// hello.cc
+/**
+ * @file map.cc
+ * @author Jing Huang (seojeung.h@gmail.com)
+ * @brief mapping addon
+ * @version 0.1
+ * @date 2019-01-28
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
 #include <nan.h>
 #include <node.h>
 
 #include <iostream>
 #include <string>
-#include "header/mba.hpp"
 
 namespace demo {
 
 using v8::Array;
 using v8::Exception;
-// using v8::Float32Array;
 using v8::FunctionCallbackInfo;
 using v8::Int32Array;
 using v8::Isolate;
 using v8::Local;
-using v8::Number;
 using v8::Object;
 using v8::String;
 using v8::Value;
@@ -24,9 +30,25 @@ using v8::Value;
 #define HEIGHT 600
 #define DIMENSIONS 480000
 
-// prototype
-int distanceSqr(int, int, int, int);
+/**
+ * @brief Calculates the distance between two points to some arbitrary power
+ * (currently 3)
+ *
+ * @param x0 X coord of point 0
+ * @param y0 Y coord of point 0
+ * @param x1 X coord of point 1
+ * @param y1 Y coord of point 1
+ * @return int The approximate distance between p0 and p1 to some arbitrary
+ * power
+ */
+int distanceSqr(int x0, int y0, int x1, int y1);
 
+/**
+ * @brief Parses data array from js and processes them into a collection of
+ * heatmaps
+ *
+ * @param args
+ */
 void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     // temporary values hardcoded into the addon, should be passed from fe
     int minT = 15;
@@ -78,9 +100,9 @@ void renderHeatmap(const FunctionCallbackInfo<Value>& args) {
     }
 
     // construct a 2d grid of vectors containing coordinate of every pixel AND
-    // the euclidean distance to each node (note that we use Shepard's IDW
-    // interpolation with p = 2, meaning we can directly use the square of the
-    // distance during rendering)
+    // the euclidean distance to each node (Shepard's IDW interpolation with p =
+    // 2, meaning we can directly use the square of the distance during
+    // rendering)
     std::vector<std::vector<int>> heatmapGrid(DIMENSIONS,
                                               std::vector<int>(2 + nodeCount));
 
@@ -168,7 +190,6 @@ void init(Local<Object> exports) {
     NODE_SET_METHOD(exports, "renderHeatmap", renderHeatmap);
 }
 
-// do we need this?
 int distanceSqr(int x0, int y0, int x1, int y1) {
     int delX = abs(x1 - x0);
     int delY = abs(y1 - y0);

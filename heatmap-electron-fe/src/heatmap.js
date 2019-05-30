@@ -1,10 +1,4 @@
-/**
- * NAN - Native Abstractions for Node.js
- *
- * Copyright (c) 2018 NAN contributors
- *
- * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>
- */
+// Requires
 const {
     ipcRenderer
 } = require('electron');
@@ -15,6 +9,7 @@ const {
 
 const renderer = require('../build/Release/renderer');
 
+// Some test data
 var test_data = [
     [
         160, 180, // node a
@@ -304,7 +299,6 @@ var test_data = [
     [21, 21, 21, 21, 21, 21, 21, 21],
     [20, 20, 20, 20, 20, 20, 20, 20]
 ]
-
 var test_data1 = [
     [
         160, 180, // node a
@@ -322,15 +316,17 @@ var test_data1 = [
 
 ]
 
+// Process the data, check for rendering time
 var t0 = performance.now();
 var hmCol = renderer.renderHeatmap(test_data);
 var t1 = performance.now();
-
 console.log(t1 - t0);
 
-
+// Configure sliders
 document.getElementById("heatmap-slider").min = "0";
 document.getElementById("heatmap-slider").max = (hmCol.length - 1).toString();
+
+// Hook temperature display and slider
 var displayTemp = document.getElementById("temp");
 var slider = document.getElementById("heatmap-slider");
 
@@ -350,6 +346,7 @@ minimize.addEventListener('click', function (event) {
     ipcRenderer.send('minimize-heatmap');
 });
 
+// Fill heatmap
 function fillHeatmapArray() {
     heatmapCanvas = document.getElementById("heatmap-canvas");
     nodeLayout = document.getElementById("node-layout");
@@ -357,11 +354,12 @@ function fillHeatmapArray() {
 
     nodeContext = nodeLayout.getContext("2d", {
         alpha: false
-    })
+    });
 
     context = heatmapCanvas.getContext("2d", {
         alpha: false
     });
+
     imageData = context.getImageData(0, 0, 800, 600);
 
     nodeContext.clearRect(0, 0, 800, 600);
@@ -380,25 +378,20 @@ function fillHeatmapArray() {
     }
 }
 
-fillHeatmapArray();
-
-/**
- * Update the month displayed
- */
+// Fill canvas with heatmap
 function updateHeatmap(index) {
     context.clearRect(0, 0, 800, 600);
-    //imageData.data.set(hmImg[index]);
     imageData.data.set(hmCol[index]);
     context.putImageData(imageData, 0, 0);
 }
 
-updateHeatmap(0);
-
+// Slide through heatmaps on scroll
 slider.oninput = function () {
     heatmapCount = this.value;
     updateHeatmap(this.value);
 }
 
+// Temperature on hover
 roomOverlay.onmousemove = function (e) {
     var index = e.clientX + e.clientY * 800;
 
@@ -406,5 +399,8 @@ roomOverlay.onmousemove = function (e) {
 
     if (!isNaN(validTempFromHeatmap))
         displayTemp.innerHTML = validTempFromHeatmap.toFixed(3);
-    //console.log(((hmCol[heatmapCount][index * 4] - 63) * 20 / 192) + 15);
 }
+
+// Init
+fillHeatmapArray();
+updateHeatmap(0);
