@@ -15,7 +15,7 @@
     "electron": "^5.0.1",
     "mysql": "^2.15.0",
     "nan": "^2.10.0",
-    "npm": "^6.9.0"
+    "npm": "^6.13.4"
   },
   "devDependencies": {
     "electron-rebuild": "^1.8.4",
